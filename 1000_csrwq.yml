@@ -1,0 +1,55 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+  - name: define provider
+    set_fact:
+      provider:
+        host: 192.168.5.160
+        username: demo
+        password: demo
+
+#  - name: Show Version
+#    ios_command:
+#      provider: "{{ provider }}"
+#      commands:
+#        - show version
+#    register: version
+#  - debug: msg={{ version.stdout }}
+    
+#  - name: no shutodwn
+#    ios_config:
+#      provider: "{{ provider }}"
+#      lines:
+#        - no shutdown
+#      parents: interface GigabitEthernet1
+ 
+  - name: configure descriptions on interfaces
+    ios_config:
+      provider: "{{ provider }}"
+      parents: 
+        - "interface {{ item.name }}"
+      lines:
+        - "description {{ item.desc }}"
+        - "ip address {{ item.ip }} 255.255.255.0"
+        - "no shutdown"
+        #- "{{ item.state }}"
+    with_items:
+      - name: GigabitEthernet1
+        desc: MGMG
+        ip: 192.168.5.160 
+#        state: "no shutdown"
+      - name: GigabitEthernet2
+        desc: network1
+        ip: 192.168.3.215
+#        state: "no shutdown"
+      - name: GigabitEthernet3
+        desc: network2
+        ip: 192.168.4.216
+#        state: "no shutdown"
+
+  
+    
