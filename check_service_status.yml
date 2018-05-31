@@ -5,7 +5,7 @@
   tasks:
   - name: Check if Debian SSH  service exist
     shell: service ssh status | grep -i running  warn=False
-    when: ansible_os_family == "Debian"
+    when: ansible_os_family == "Debian" or ansible_os_family == "Ubuntu"
     register: status
 
   - name: print debian status
