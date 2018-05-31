@@ -1,0 +1,15 @@
+---
+- hosts: testservers
+  user: kamil.babayev
+  gather_facts: no
+  tasks:
+  - name: check if bareos directory exists
+    stat:
+      path: /etc/bareos
+    register: p
+  - debug:
+      msg: "File exists..."
+    when: p.stat.exists
+  - debug:
+      msg: "File does not exists..."
+    when: p.stat.exists == False
