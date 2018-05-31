@@ -1,0 +1,23 @@
+---
+- hosts: testservers
+  user: kamil.babayev
+  gather_facts: yes
+  tasks:
+  - name: Check if Debian SSH  service exist
+    shell: service ssh status | grep -i running  warn=False
+    when: ansible_os_family == "Debian"
+    register: status
+
+  - name: print debian status
+    debug: var=status.stdout_lines
+    when: ansible_os_family == "Debian"
+
+
+  - name: Check if RedHat SSH  service exist
+    shell: systemctl status sshd | grep -i running  warn=False
+    when: ansible_os_family == "RedHat"
+    register: status
+
+  - name: print red hat status
+    debug: var=status.stdout_lines
+    when: ansible_os_family == "RedHat"
