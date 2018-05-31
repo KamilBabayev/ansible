@@ -1,0 +1,7 @@
+---
+- hosts: servers
+  user: kamil.babayev
+  gather_facts: no
+  tasks:
+  - name: check ping connection to hosts
+    ping:
